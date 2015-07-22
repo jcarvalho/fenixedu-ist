@@ -20,7 +20,7 @@ package pt.ist.fenixedu.cmscomponents.ui.spring;
 
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
-import static org.fenixedu.bennu.io.servlets.FileDownloadServlet.getDownloadUrl;
+import static org.fenixedu.bennu.io.servlet.FileDownloadServlet.getDownloadUrl;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
 import org.fenixedu.bennu.core.domain.Bennu;
 import org.fenixedu.bennu.core.domain.User;
 import org.fenixedu.bennu.core.domain.exceptions.BennuCoreDomainException;
-import org.fenixedu.bennu.core.groups.AnyoneGroup;
 import org.fenixedu.bennu.core.groups.DynamicGroup;
+import org.fenixedu.bennu.core.groups.Group;
 import org.fenixedu.bennu.core.security.Authenticate;
 import org.fenixedu.bennu.io.domain.GroupBasedFile;
 import org.fenixedu.bennu.spring.portal.SpringApplication;
@@ -257,7 +257,7 @@ public class UnitSiteManagementController {
                 try {
                     GroupBasedFile file =
                             new GroupBasedFile(multipartFile.getOriginalFilename(), multipartFile.getOriginalFilename(),
-                                    multipartFile.getBytes(), AnyoneGroup.get());
+                                    multipartFile.getBytes(), Group.anyone());
                     post.getPostFiles().putFile(file);
                     postMetadata = postMetadata.with(name, getDownloadUrl(file));
                 } catch (IOException e) {

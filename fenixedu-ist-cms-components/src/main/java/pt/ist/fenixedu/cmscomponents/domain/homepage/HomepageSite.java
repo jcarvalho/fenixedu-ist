@@ -22,11 +22,7 @@ import java.util.List;
 
 import org.fenixedu.academic.domain.Person;
 import org.fenixedu.bennu.core.domain.Bennu;
-import org.fenixedu.bennu.core.groups.AnyoneGroup;
 import org.fenixedu.bennu.core.groups.Group;
-import org.fenixedu.bennu.core.groups.LoggedGroup;
-import org.fenixedu.bennu.core.groups.NobodyGroup;
-import org.fenixedu.bennu.core.groups.UserGroup;
 import org.fenixedu.commons.i18n.I18N;
 import org.fenixedu.commons.i18n.LocalizedString;
 
@@ -39,8 +35,8 @@ public class HomepageSite extends HomepageSite_Base {
         super();
         setBennu(Bennu.getInstance());
         setSlug(person.getUser().getUsername());
-        setCanAdminGroup(NobodyGroup.get());
-        setCanPostGroup(NobodyGroup.get());
+        setCanAdminGroup(Group.nobody());
+        setCanPostGroup(Group.nobody());
         setOwner(person);
     }
 
@@ -62,6 +58,6 @@ public class HomepageSite extends HomepageSite_Base {
     }
 
     public List<Group> getContextualPermissionGroups() {
-        return ImmutableList.of(AnyoneGroup.get(), LoggedGroup.get(), UserGroup.of(getOwner().getUser()));
+        return ImmutableList.of(Group.anyone(), Group.logged(), getOwner().getUser().groupOf());
     }
 }

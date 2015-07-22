@@ -18,7 +18,7 @@
  */
 package pt.ist.fenixedu.cmscomponents.domain.accessControl;
 
-import java.util.Set;
+import java.util.stream.Stream;
 
 import org.fenixedu.academic.domain.accessControl.FenixGroup;
 import org.fenixedu.bennu.core.annotation.GroupArgument;
@@ -56,12 +56,12 @@ public class ManagersOfUnitSiteGroup extends FenixGroup {
     }
 
     @Override
-    public Set<User> getMembers() {
+    public Stream<User> getMembers() {
         return site.getCanAdminGroup().getMembers();
     }
 
     @Override
-    public Set<User> getMembers(DateTime when) {
+    public Stream<User> getMembers(DateTime when) {
         return site.getCanAdminGroup().getMembers(when);
     }
 

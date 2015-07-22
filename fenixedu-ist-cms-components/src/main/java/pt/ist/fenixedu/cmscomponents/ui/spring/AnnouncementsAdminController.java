@@ -36,9 +36,9 @@ import org.fenixedu.academic.domain.ExecutionCourse;
 import org.fenixedu.academic.domain.Professorship;
 import org.fenixedu.academic.predicate.AccessControl;
 import org.fenixedu.academic.ui.struts.action.teacher.ManageExecutionCourseDA;
-import org.fenixedu.bennu.core.groups.AnyoneGroup;
+import org.fenixedu.bennu.core.groups.Group;
 import org.fenixedu.bennu.io.domain.GroupBasedFile;
-import org.fenixedu.bennu.io.servlets.FileDownloadServlet;
+import org.fenixedu.bennu.io.servlet.FileDownloadServlet;
 import org.fenixedu.cms.domain.Category;
 import org.fenixedu.cms.domain.Post;
 import org.fenixedu.cms.domain.Site;
@@ -132,7 +132,7 @@ public class AnnouncementsAdminController extends ExecutionCourseController {
     private GroupBasedFile addFile(MultipartFile attachment, Post p) throws IOException {
         GroupBasedFile f =
                 new GroupBasedFile(attachment.getOriginalFilename(), attachment.getOriginalFilename(), attachment.getBytes(),
-                        AnyoneGroup.get());
+                        Group.anyone());
         p.getPostFiles().putFile(f);
         return f;
     }

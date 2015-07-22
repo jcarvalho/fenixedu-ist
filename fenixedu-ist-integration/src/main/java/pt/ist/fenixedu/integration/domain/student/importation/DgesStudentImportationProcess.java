@@ -59,7 +59,6 @@ import org.fenixedu.academic.util.Bundle;
 import org.fenixedu.academic.util.LabelFormatter;
 import org.fenixedu.academic.util.Money;
 import org.fenixedu.bennu.core.domain.User;
-import org.fenixedu.bennu.core.domain.UserLoginPeriod;
 import org.fenixedu.spaces.domain.Space;
 import org.joda.time.DateTime;
 import org.joda.time.YearMonthDay;
@@ -229,7 +228,7 @@ public class DgesStudentImportationProcess extends DgesStudentImportationProcess
                 logCandidateIsEmployee(LOG_WRITER, degreeCandidateDTO, person);
             }
 
-            UserLoginPeriod.createOpenPeriod(person.getUser());
+            person.getUser().openLoginPeriod();
 
             if (person.getStudent() == null) {
                 // Ensure that the same student number is created

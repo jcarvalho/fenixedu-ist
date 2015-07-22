@@ -28,12 +28,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.fenixedu.bennu.core.groups.AnyoneGroup;
 import org.fenixedu.bennu.core.groups.Group;
-import org.fenixedu.bennu.core.groups.LoggedGroup;
 import org.fenixedu.bennu.core.security.Authenticate;
 import org.fenixedu.bennu.io.domain.GroupBasedFile;
-import org.fenixedu.bennu.io.servlets.FileDownloadServlet;
+import org.fenixedu.bennu.io.servlet.FileDownloadServlet;
 import org.fenixedu.cms.domain.Category;
 import org.fenixedu.cms.domain.Menu;
 import org.fenixedu.cms.domain.MenuItem;
@@ -83,7 +81,7 @@ public class PagesAdminService {
         if (site instanceof HomepageSite) {
             return ((HomepageSite) site).getContextualPermissionGroups();
         }
-        return ImmutableList.of(AnyoneGroup.get(), LoggedGroup.get());
+        return ImmutableList.of(Group.anyone(), Group.logged());
     }
 
     @Atomic(mode = Atomic.TxMode.WRITE)
@@ -168,8 +166,7 @@ public class PagesAdminService {
     @Atomic(mode = Atomic.TxMode.WRITE)
     protected GroupBasedFile addAttachment(String name, MultipartFile attachment, MenuItem menuItem) throws IOException {
         Post post = postForPage(menuItem.getPage());
-        GroupBasedFile file =
-                new GroupBasedFile(name, attachment.getOriginalFilename(), attachment.getBytes(), AnyoneGroup.get());
+        GroupBasedFile file = new GroupBasedFile(name, attachment.getOriginalFilename(), attachment.getBytes(), Group.anyone());
         post.getAttachments().putFile(file, 0);
         return file;
     }
@@ -289,7 +286,7 @@ public class PagesAdminService {
     protected GroupBasedFile addPostFile(MultipartFile attachment, MenuItem menuItem) throws IOException {
         GroupBasedFile f =
                 new GroupBasedFile(attachment.getOriginalFilename(), attachment.getOriginalFilename(), attachment.getBytes(),
-                        AnyoneGroup.get());
+                        Group.anyone());
         postForPage(menuItem.getPage()).getPostFiles().putFile(f);
         return f;
     }
@@ -300,8 +297,8 @@ public class PagesAdminService {
 
         Post.Attachments attachments = post.getAttachments();
         int attachmentPosition =
-                (int) post.getAttachments().getFiles().stream().filter(f -> f == file).map(f -> f.getPostFile().getIndex())
-                        .findAny().orElse(-1);
+                post.getAttachments().getFiles().stream().filter(f -> f == file).map(f -> f.getPostFile().getIndex()).findAny()
+                        .orElse(-1);
         if (attachmentPosition != -1) {
             attachments.removeFile(attachmentPosition);
             file.delete();
@@ -390,13 +387,13 @@ public class PagesAdminService {
         for (int i = 0; i < oldPost.getAttachments().getFiles().size(); ++i) {
             GroupBasedFile file = oldPost.getAttachments().getFiles().get(i);
             GroupBasedFile attachmentCopy =
-                    new GroupBasedFile(file.getDisplayName(), file.getFilename(), file.getContent(), AnyoneGroup.get());
+                    new GroupBasedFile(file.getDisplayName(), file.getFilename(), file.getContent(), Group.anyone());
             newPost.getAttachments().putFile(attachmentCopy, i);
         }
 
         for (GroupBasedFile file : oldPost.getPostFiles().getFiles()) {
             GroupBasedFile postFileCopy =
-                    new GroupBasedFile(file.getDisplayName(), file.getFilename(), file.getContent(), AnyoneGroup.get());
+                    new GroupBasedFile(file.getDisplayName(), file.getFilename(), file.getContent(), Group.anyone());
             newPost.getPostFiles().putFile(postFileCopy);
         }
         return newPost;

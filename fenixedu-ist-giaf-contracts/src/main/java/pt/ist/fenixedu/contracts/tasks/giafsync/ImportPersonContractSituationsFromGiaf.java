@@ -192,7 +192,7 @@ class ImportPersonContractSituationsFromGiaf extends ImportProcessor {
                     modifications.add(new Modification() {
                         @Override
                         public void execute() {
-                            UserLoginPeriod.createOpenPeriod(user);
+                            user.openLoginPeriod();
                         }
                     });
                 } else {
@@ -201,7 +201,7 @@ class ImportPersonContractSituationsFromGiaf extends ImportProcessor {
                         modifications.add(new Modification() {
                             @Override
                             public void execute() {
-                                UserLoginPeriod.closeOpenPeriod(user);
+                                user.closeLoginPeriod();
                             }
                         });
                     }

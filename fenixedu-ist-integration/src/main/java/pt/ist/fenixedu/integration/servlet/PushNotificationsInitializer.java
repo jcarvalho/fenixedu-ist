@@ -10,8 +10,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 
 import org.fenixedu.bennu.core.rest.JsonBodyReaderWriter;
-import org.fenixedu.bennu.signals.DomainObjectEvent;
-import org.fenixedu.bennu.signals.Signal;
+import org.fenixedu.bennu.core.signals.DomainObjectEvent;
+import org.fenixedu.bennu.core.signals.Signal;
 import org.fenixedu.cms.domain.Post;
 import org.fenixedu.commons.stream.StreamUtils;
 import org.fenixedu.learning.domain.executionCourse.ExecutionCourseSite;
